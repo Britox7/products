@@ -1,6 +1,7 @@
 package com.kaue.project.products.controllers;
-
 import com.kaue.project.products.entities.Comprador;
+import com.kaue.project.products.entities.Produtos;
+import com.kaue.project.products.repositories.ProdutosRepository;
 import com.kaue.project.products.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -13,26 +14,26 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(value = "/Compradores")
-public class UserController {
+@RequestMapping(value = "/Produtos")
+public class ProdutosController {
 
     @Autowired
-    private UserRepository repository;
+    private ProdutosRepository repository;
 
     @GetMapping
-    public List<Comprador> findAll(){
-        List<Comprador> result = repository.findAll();
+    public List<Produtos> findAll(){
+        List<Produtos> result = repository.findAll();
         return result;
     }
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<Object> findById(@PathVariable Long id){
         try {
-            if (repository.existsById(id)) {
-                Comprador result = repository.findById(id).get();
+            if (repository.existsById(id)){
+                Produtos result = repository.findById(id).get();
                 return ResponseEntity.ok(result);
             } else {
-                String mensagem = "Usuário não encontrado, forneça um ID válido.";
+                String mensagem = "Produto não encontrado, forneça um ID válido.";
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(mensagem);
             }
         } catch (DataAccessException e) {
@@ -41,8 +42,8 @@ public class UserController {
     }
 
     @PostMapping
-    public Comprador insert(@RequestBody Comprador comprador){
-        Comprador result = repository.save(comprador);
+    public Produtos insert(@RequestBody Produtos produtos){
+        Produtos result = repository.save(produtos);
         return result;
     }
 
@@ -51,15 +52,13 @@ public class UserController {
         try {
             if (repository.existsById(id)) {
                 repository.deleteById(id);
-                String message = "Usuário deletado com sucesso";
+                String message = "Produto deletado com sucesso";
                 return ResponseEntity.ok(message);
             } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário inexistente, forneça um id válido: ");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Produto inexistente, forneça um id válido: ");
             }
         } catch (DataAccessException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocorreu um erro interno ao excluir o usuário: " + e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocorreu um erro interno ao excluir o usuário: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocorreu um erro interno ao excluir o produto: " + e.getMessage());
         }
     }
 }
