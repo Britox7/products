@@ -3,6 +3,8 @@ import com.kaue.project.products.entities.Comprador;
 import com.kaue.project.products.entities.Produtos;
 import com.kaue.project.products.repositories.ProdutosRepository;
 import com.kaue.project.products.repositories.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.ResponseEntity;
@@ -61,4 +63,25 @@ public class ProdutosController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocorreu um erro interno ao excluir o produto: " + e.getMessage());
         }
     }
+
+    @PutMapping
+    @Transactional
+    public ResponseEntity updateProduto(@RequestBody Produtos data) {
+        try {
+            Optional<Produtos> optionalProduto = repository.findById(data.getId());
+            if (optionalProduto.isPresent()) {
+                Produtos produto = optionalProduto.get();
+                produto.setName(data.getName());
+                produto.setPreco(data.getPreco());
+                repository.save(produto);
+                return ResponseEntity.ok(produto);
+            } else {
+                throw new EntityNotFoundException("Produto não encontrado para o ID: " + data.getId());
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocorreu um erro interno ao atualizar o produto: " + e.getMessage());
+        }
+    }
+
+
 }

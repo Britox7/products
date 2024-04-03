@@ -1,7 +1,10 @@
 package com.kaue.project.products.controllers;
 
 import com.kaue.project.products.entities.Comprador;
+import com.kaue.project.products.entities.Produtos;
 import com.kaue.project.products.repositories.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.ResponseEntity;
@@ -60,6 +63,25 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocorreu um erro interno ao excluir o usuário: " + e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocorreu um erro interno ao excluir o usuário: " + e.getMessage());
+        }
+    }
+
+    @PutMapping
+    @Transactional
+    public ResponseEntity updateComprador(@RequestBody Comprador data) {
+        try {
+            Optional<Comprador> optionalComprador = repository.findById(data.getId());
+            if (optionalComprador.isPresent()) {
+                Comprador comprador = optionalComprador.get();
+                comprador.setName(data.getName());
+                comprador.setDinheiroDisp(data.getDinheiroDisp());
+                repository.save(comprador);
+                return ResponseEntity.ok(comprador);
+            } else {
+                throw new EntityNotFoundException("Comprador não encontrado para o ID: " + data.getId());
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocorreu um erro interno ao atualizar o comprador: " + e.getMessage());
         }
     }
 }
