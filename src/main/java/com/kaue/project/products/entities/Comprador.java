@@ -1,6 +1,5 @@
 package com.kaue.project.products.entities;
-
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 @Entity
@@ -13,8 +12,9 @@ public class Comprador {
     private String name;
     private int dinheiroDisp;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id")
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY, targetEntity = Produtos.class)
+    @JoinColumn(name = "product_id", insertable = true, updatable=true, nullable = false)
+    @JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
     private Produtos produtos;
 
     public Comprador(){

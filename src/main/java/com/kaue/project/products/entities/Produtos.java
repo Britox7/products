@@ -1,5 +1,4 @@
 package com.kaue.project.products.entities;
-
 import jakarta.persistence.*;
 
 @Entity

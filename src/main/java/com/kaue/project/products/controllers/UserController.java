@@ -1,7 +1,5 @@
 package com.kaue.project.products.controllers;
-
 import com.kaue.project.products.entities.Comprador;
-import com.kaue.project.products.entities.Produtos;
 import com.kaue.project.products.repositories.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -10,8 +8,6 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
-import org.springframework.dao.EmptyResultDataAccessException;
-
 import java.util.List;
 import java.util.Optional;
 
