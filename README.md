@@ -180,7 +180,7 @@ spring.jpa.properties.hibernate.use_sql_comments=true
 </div>
 
 <p>
-  O funcionamento do código será postado no Linkedin: 
+  O funcionamento do código será postado no Linkedin: https://www.linkedin.com/posts/kau%C3%AA-brito_opentowork-java-activity-7183158842216583168-GLIY?utm_source=share&utm_medium=member_desktop
 </p>
 
 
